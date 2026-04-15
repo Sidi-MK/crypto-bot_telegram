@@ -4,6 +4,10 @@ const axios = require("axios");
 const TelegramBot = require("node-telegram-bot-api");
 
 const TOKEN = process.env.TOKEN;
+if (!TOKEN) {
+  throw new Error("❌ TOKEN is missing. Check environment variables.");
+}
+console.log("TOKEN:", process.env.TOKEN ? "FOUND" : "MISSING");
 const ALERTS_FILE = "alerts.json";
 const MIN_COOLDOWN = 10;
 const CHECK_INTERVAL = 10000;
@@ -33,7 +37,7 @@ function getRealIndex(chatId, userAlert) {
 async function getPrice(symbol) {
   try {
     const response = await axios.get(
-      `https://api.binance.com/api/v3/ticker/price?symbol=${symbol}`
+      `https://api.binance.us/api/v3/ticker/price?symbol=${symbol}`
     );
     const price = parseFloat(response.data.price);
     console.log(`${symbol}: ${price}`);
